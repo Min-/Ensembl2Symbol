@@ -1,7 +1,6 @@
 **.o
 **~
 **.hi
-**.txt
 **.swp
 **.bam
 **.bai
@@ -15,19 +14,10 @@ bin/
 .cabal-sandbox/
 cabal.sandbox.config
 dist/
-data/
 .stack-work/
-
 *.cache
-
-*.cache
-
 src/MergeXlsLinux
-
 src/MergeXls
-
 src/CollapseHomerRNACallingLinux
-
 .stack-work/install/x86_64-osx/lts-3.9/7.10.2/pkgdb/package.cache
-
 .stack-work/install/x86_64-osx/lts-3.9/7.10.2/pkgdb/package.cache
