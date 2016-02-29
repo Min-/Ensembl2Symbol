@@ -10,13 +10,14 @@ maintainer:          mz1@bcm.edu
 copyright:           2016 Min Zhang
 category:            Data
 build-type:          Simple
+data-files:	     data/unique.v24.annotation.pairs.txt, data/unique.vM8.annotation.pairs.txt
 -- extra-source-files:
 cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
   exposed-modules:     Lib
-  build-depends:       base >= 4.7 && < 5, text>=1.2, unordered-containers>=2.6
+  build-depends:       base >= 4.7 && < 5, text>=1.2, unordered-containers>=0.2.5, safe >= 0.3
   default-language:    Haskell2010
 
 executable Ensembl2Symbol-exe
