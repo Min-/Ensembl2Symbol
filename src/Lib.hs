@@ -48,6 +48,7 @@ removeDup xs = map toPair $ L.transpose $ changeGeneName $ L.transpose $ L.sortB
 
 annotateEnsembl = do
   -- assume id is the first column
+   intro
    [species, inputpath] <- take 2 <$> getArgs
    refmap <- (case species of 
                     "mm10" -> refMouse
@@ -56,4 +57,10 @@ annotateEnsembl = do
    result <- T.unlines . map ((\(ensembl, rest) -> T.concat [M.lookupDefault ensembl ensembl refmap, rest]) . (\x->T.breakOn "\t" x)) . T.lines <$> TextIO.readFile inputpath
    TextIO.putStr result
    
+intro = do
+  TextIO.putStrLn "Ensembl2Symbol v0.1"
+  TextIO.putStrLn "Min Zhang (mz1 at bcm dot edu)"
+  TextIO.putStrLn "current gtf annotation: human gencode v24; mouse gencode vM8"
+  TextIO.putStrLn "Note: Only ensembl IDs in the first column will be annoated to gene symbol."
+  TextIO.putStrLn "Usage: Ensembl2Symbol [hg38|mm10] inputpath > outputpath"
 
