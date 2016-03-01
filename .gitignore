@@ -8,7 +8,6 @@
 **.fastq
 **.fasta
 **.fa
-test/
 reducedGenome/
 bin/
 .cabal-sandbox/
