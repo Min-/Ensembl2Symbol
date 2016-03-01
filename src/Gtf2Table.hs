@@ -52,4 +52,4 @@ replaceTab = T.replace "\t" "; "
 
 shrinkLines = Set.toList . Set.fromList
 
-makeTable x = T.unlines $ map (T.intercalate "\t") x
+makeTable x = T.unlines $ map (T.intercalate " ") x
