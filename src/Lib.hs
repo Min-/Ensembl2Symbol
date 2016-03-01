@@ -24,7 +24,7 @@ import qualified Data.HashMap.Lazy as M
 import qualified Data.Maybe as Maybe
 import System.Environment (getArgs)
 
-ref filepath = TextIO.readFile filepath >>= return . M.fromList . removeDup . map (T.splitOn " ") . T.lines
+ref filepath = TextIO.readFile filepath >>= return . M.fromList . removeDup . map (T.splitOn "\t") . T.lines
 
 refMouse = ref "data/unique.vM8.annotation.pairs.txt" 
 refHuman = ref "data/unique.v24.annotation.pairs.txt"
