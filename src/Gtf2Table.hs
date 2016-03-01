@@ -32,12 +32,23 @@ main = do
   let inputpath = S.headNote "Please put two arguments. gtf2Tab inputpath outputpath." args
   let outputpath = S.lastNote "Please put two arguments. gtf2Tab inputpath outputpath." args
   input <- TextIO.readFile inputpath
-  let output = (makeTable . shrinkLines . filter (\x->length x == 2) . map (map last . filter (\x->head x == "gene_id" || head x == "gene_name") . map (T.splitOn " ")) . map (T.splitOn ";") . T.lines . stripQuotes) input
+  let output = (makeTable . 
+                shrinkLines . 
+                filter (\x->length x == 2) .
+                map (map last . filter (\x->head x == "gene_id" || head x == "gene_name") . map (T.splitOn " ")) .
+                map (T.splitOn "; ") . 
+                T.lines . 
+                replaceTab .
+                stripQuotes) input
   TextIO.writeFile outputpath output
+
+inputpath = "/Users/minzhang/Downloads/sample.gtf"
 
 intro = TextIO.putStrLn "Gtf2Table: inputpath outputpath"
 
 stripQuotes t = T.replace "\"" "" t
+
+replaceTab = T.replace "\t" "; "
 
 shrinkLines = Set.toList . Set.fromList
 
