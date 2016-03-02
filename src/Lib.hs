@@ -28,6 +28,7 @@ ref filepath = TextIO.readFile filepath >>= return . M.fromList . removeDup . ma
 
 refMouse = ref "data/unique.vM8.annotation.pairs.txt" 
 refHuman = ref "data/unique.v24.annotation.pairs.txt"
+refHumanTx = ref "data/unique.v24.transcript.pairs.txt"
 
 toPair [x, y] = (x, y)
 
@@ -55,6 +56,7 @@ annotateEnsembl = do
    refmap <- (case species of 
                     "mm10" -> refMouse
                     "hg38" -> refHuman
+                    "hg38tx" -> refHumanTx
                     otherwise -> refHuman)
    result <- T.unlines . map ((\(ensembl, rest) -> T.concat [M.lookupDefault ensembl ensembl refmap, rest]) . (\x->T.breakOn "\t" x)) . T.lines . T.replace " " "\t" . T.replace "," "\t" <$> TextIO.readFile inputpath
    TextIO.putStr result
@@ -65,5 +67,5 @@ intro = do
   TextIO.putStrLn "current gtf annotation: human gencode v24; mouse gencode vM8"
   TextIO.putStrLn "Note: Only ensembl IDs in the first column will be annoated to gene symbol.\n"
   TextIO.putStrLn "Note: White space and comma delimiters will be converted to tabs"
-  TextIO.putStrLn "Usage: Ensembl2Symbol [hg38|mm10] inputpath > outputpath"
+  TextIO.putStrLn "Usage: Ensembl2Symbol [hg38|mm10|hg38tx] inputpath > outputpath"
 

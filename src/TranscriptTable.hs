@@ -42,7 +42,7 @@ main = do
                 stripQuotes) input
   TextIO.writeFile outputpath output
 
-intro = TextIO.putStrLn "Gtf2Table: inputpath outputpath"
+intro = TextIO.putStrLn "transcriptTable inputpath outputpath"
 
 stripQuotes t = T.replace "\"" "" t
 
