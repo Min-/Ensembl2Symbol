@@ -1,7 +1,7 @@
 {-#LANGUAGE OverloadedStrings#-}
 
 {-
-Project name: Annotate ensembl genes to symbol using v24 gencode human gtf
+Project name: Annotate ensembl transcript to symbol (gene isoforms) using v24 gencode human gtf
 Min Zhang
 Date: Feb 26, 2016
 Version: v0.1.0
