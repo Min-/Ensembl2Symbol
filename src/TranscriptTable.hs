@@ -8,7 +8,7 @@ Version: v0.1.0
 README: Annotation transcript IDs to gene symbol
 -}
 
-module Main
+module TranscriptTable
 where
 
 import qualified Data.Text.Lazy as T

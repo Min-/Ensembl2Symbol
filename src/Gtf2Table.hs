@@ -8,7 +8,7 @@ Version: v0.1.0
 README: Fix some genes have errors in annotation 
 -}
 
-module Main
+module Gtf2Table
 where
 
 import qualified Data.Text.Lazy as T
