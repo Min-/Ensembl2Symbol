@@ -19,6 +19,11 @@ cd Ensembl2Symbol
 ### install Ensembl2Symbol through stack
 
 ```bash
+stack setup && stack build
+```
 
+### test Ensembl2Symbol installation
+```bash
+stack exec Ensembl2Symbol
 ```
 
