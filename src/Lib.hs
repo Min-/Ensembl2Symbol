@@ -24,7 +24,8 @@ import qualified Data.HashMap.Lazy as M
 import qualified Data.Maybe as Maybe
 import System.Environment (getArgs)
 
-ref filepath = TextIO.readFile filepath >>= return . M.fromList . removeDup . map (T.splitOn " ") . T.lines
+ref filepath = TextIO.readFile filepath >>= return . M.fromList . removeDup . map (takeEnsemblName . (T.splitOn " ")) . T.lines
+  where takeEnsemblName [ensembl, symbol] = [S.headDef ensembl $ T.splitOn "." ensembl, symbol]
 
 refMouse = ref "data/unique.vM8.annotation.pairs.txt" 
 refHuman = ref "data/unique.v24.annotation.pairs.txt"
@@ -48,18 +49,19 @@ changeGeneName xs = (take 1 xs) ++ [zipWith addCounter nameCol (counter nameCol)
 removeDup xs = map toPair $ L.transpose $ changeGeneName $ L.transpose $ L.sortBy (comparing last) xs
 
 annotateEnsembl = do
-  -- assume id is the first column
+   -- assume id is the first column
    intro
    args <- getArgs
    let species = S.headNote "Please choose a genome version [hg38|mm10]" args
    let inputpath = S.lastNote "Please put an input file path." args
+   let outputpath = inputpath ++ ".symbol.txt"
    refmap <- (case species of 
                     "mm10" -> refMouse
                     "hg38" -> refHuman
                     "hg38tx" -> refHumanTx
                     otherwise -> refHuman)
    result <- T.unlines . map ((\(ensembl, rest) -> T.concat [M.lookupDefault ensembl ensembl refmap, rest]) . (\x->T.breakOn "\t" x)) . T.lines . T.replace " " "\t" . T.replace "," "\t" <$> TextIO.readFile inputpath
-   TextIO.putStr result
+   TextIO.writeFile outputpath result
    
 intro = do
   TextIO.putStrLn "Ensembl2Symbol v0.1"
@@ -67,5 +69,6 @@ intro = do
   TextIO.putStrLn "current gtf annotation: human gencode v24; mouse gencode vM8"
   TextIO.putStrLn "Note: Only ensembl IDs in the first column will be annoated to gene symbol.\n"
   TextIO.putStrLn "Note: White space and comma delimiters will be converted to tabs"
-  TextIO.putStrLn "Usage: Ensembl2Symbol [hg38|mm10|hg38tx] inputpath > outputpath"
+  TextIO.putStrLn "Usage: Ensembl2Symbol [hg38|mm10|hg38tx] inputpath"
+  TextIO.putStrLn "The output file will be inputfile.symbol.txt"
 
