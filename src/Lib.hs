@@ -5,6 +5,25 @@ Project name: Annotate ensembl transcript to symbol (gene isoforms) using v24 ge
 Min Zhang
 Date: Feb 26, 2016
 Version: v0.1.0
+
+Date: March 7, 2017
+Version: v0.1.1
+Fix bug, the input has EnsemblID.number format, but the number in dictionary was stripped.
+
+Date: August 29, 2017
+Version: v0.1.2
+Fix bug: 
+I.
+1. We found that Vegfc was not converted in the output, instead ENSMUSG00000031520.6 was in the list
+2. Checked unique.vM8.annotation.pairs.txt file, found that Vegfc was annotated as ENSMUSG00000031520.5
+3. Need to strip ".5" in the dictionary, this number seems a version control for each gene
+
+II.
+1. The output has header lines, remove it.
+2. The output is printed to the screen, use a automated file name instead.
+
+These problems seem fixed in the v0.1.1 version, however, not compiled in the linux machine.
+
 README: 
 -}
 
@@ -60,7 +79,9 @@ annotateEnsembl = do
                     "hg38" -> refHuman
                     "hg38tx" -> refHumanTx
                     otherwise -> refHuman)
-   result <- T.unlines . map ((\(ensembl, rest) -> T.concat [M.lookupDefault ensembl ensembl refmap, rest]) . (\x->T.breakOn "\t" x)) . T.lines . T.replace " " "\t" . T.replace "," "\t" <$> TextIO.readFile inputpath
+   result <- T.unlines . map ((\(ensembl, rest) -> T.concat [M.lookupDefault ensembl ensembl refmap, rest]) .
+                              (\x-> (\(a,b) -> (fst $ T.breakOn "." a, b)) $ T.breakOn "\t" x)) . 
+             T.lines . T.replace " " "\t" . T.replace "," "\t" <$> TextIO.readFile inputpath
    TextIO.writeFile outputpath result
    
 intro = do

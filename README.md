@@ -26,4 +26,9 @@ stack setup && stack build
 ```bash
 stack exec Ensembl2Symbol
 ```
+### Notes
+
+May 24, 2017
+current exec is running on Linux Ubuntu, not on my Macbook Pro
+need an approch to make both work
 
