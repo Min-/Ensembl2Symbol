@@ -2,7 +2,7 @@
 
 Convert Ensembl IDs to gene symbols
 
-Author: Min Zhang (mz1 at bcm dot edu)
+Author: Min Zhang (min_z at outlook.com)
 
 Liscence: BSD3
 

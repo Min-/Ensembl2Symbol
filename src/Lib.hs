@@ -49,6 +49,7 @@ ref filepath = TextIO.readFile filepath >>= return . M.fromList . removeDup . ma
 refMouse = ref "data/unique.vM8.annotation.pairs.txt" 
 refHuman = ref "data/unique.v24.annotation.pairs.txt"
 refHumanTx = ref "data/unique.v24.transcript.pairs.txt"
+refRabbitMouse = ref "data/mart_export_rabbit_to_mousesymbol.shrink.txt"
 
 toPair [x, y] = (x, y)
 
@@ -67,6 +68,10 @@ changeGeneName xs = (take 1 xs) ++ [zipWith addCounter nameCol (counter nameCol)
 
 removeDup xs = map toPair $ L.transpose $ changeGeneName $ L.transpose $ L.sortBy (comparing last) xs
 
+preprocessing =  T.lines . 
+                 T.replace " " "\t" . 
+                 T.replace "," "\t"
+
 annotateEnsembl = do
    -- assume id is the first column
    intro
@@ -78,18 +83,20 @@ annotateEnsembl = do
                     "mm10" -> refMouse
                     "hg38" -> refHuman
                     "hg38tx" -> refHumanTx
+                    "rabbit" -> refRabbitMouse
                     otherwise -> refHuman)
    result <- T.unlines . map ((\(ensembl, rest) -> T.concat [M.lookupDefault ensembl ensembl refmap, rest]) .
                               (\x-> (\(a,b) -> (fst $ T.breakOn "." a, b)) $ T.breakOn "\t" x)) . 
-             T.lines . T.replace " " "\t" . T.replace "," "\t" <$> TextIO.readFile inputpath
+             preprocessing <$> TextIO.readFile inputpath
    TextIO.writeFile outputpath result
-   
+
+
 intro = do
   TextIO.putStrLn "Ensembl2Symbol v0.1"
   TextIO.putStrLn "Min Zhang (mz1 at bcm dot edu)"
   TextIO.putStrLn "current gtf annotation: human gencode v24; mouse gencode vM8"
   TextIO.putStrLn "Note: Only ensembl IDs in the first column will be annoated to gene symbol.\n"
   TextIO.putStrLn "Note: White space and comma delimiters will be converted to tabs"
-  TextIO.putStrLn "Usage: Ensembl2Symbol [hg38|mm10|hg38tx] inputpath"
+  TextIO.putStrLn "Usage: Ensembl2Symbol [hg38|mm10|hg38tx|rabbit] inputpath"
   TextIO.putStrLn "The output file will be inputfile.symbol.txt"
 
