@@ -22,9 +22,9 @@ cd Ensembl2Symbol
 stack setup && stack build
 ```
 
-### test Ensembl2Symbol installation
+### test Ensembl2Symbol installation, output file will be located in the same location as input with .symbol.txt suffix
 ```bash
-stack exec Ensembl2Symbol
+stack exec Ensembl2Symbol mm9 inputfile
 ```
 ### Notes
 
@@ -32,3 +32,5 @@ May 24, 2017
 current exec is running on Linux Ubuntu, not on my Macbook Pro
 need an approch to make both work
 
+Mar 27, 2020
+It works on Mac as well now.
